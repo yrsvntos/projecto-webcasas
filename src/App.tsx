@@ -6,6 +6,7 @@ import Login from "./pages/login";
 import { HouseDetail } from "./pages/house";
 import Register from "./pages/register";
 import Error from "./pages/error";
+import Private from "./routes/Private";
 
 const router = createBrowserRouter(
   [
@@ -18,7 +19,11 @@ const router = createBrowserRouter(
         },
         {
           path: "/dashboard",
-          element: <Dashboard/>
+          element: 
+          <Private>
+            <Dashboard/>
+          </Private>
+            
         },
         {
           path: "/casas/:id",
