@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect, useContext  } from "react";
 import { Container } from "../../components/container";
 import { Input } from "../../components/input";
 import { Link, useNavigate } from "react-router-dom";
@@ -6,6 +6,12 @@ import { useForm } from "react-hook-form";
 import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { HiLockClosed, HiOutlineMail, HiUserCircle } from "react-icons/hi";
+import { auth } from "../../services/firebaseConnection";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import toast from "react-hot-toast";
+import { AuthContext } from "../../context/authContext";
+import { signOut } from "firebase/auth";
+
 
 const schema = z.object({
     name: z.string().nonempty("O campo do nome é obrigatório!").min(3,"O campo do nome deve conter no minímo 3 caractéres!"),
@@ -15,18 +21,37 @@ const schema = z.object({
 type FormData = z.infer<typeof schema>
 
 export default function Register(){
+    const {handleInfoUser} = useContext(AuthContext)
     const navigate = useNavigate();
-    const [login, setLogin] = useState("");
     const {register, handleSubmit, formState: {errors}} = useForm({
         resolver: zodResolver(schema),
         mode: "onChange"
     });
-
-    async function onSubmit(){
-        alert("Teste!");
+    useEffect(()=>{
+        async function handleLogOut(){
+            await signOut(auth);
+        }
+        handleLogOut();
+    }, [])
+    async function onSubmit(data: FormData){
+        createUserWithEmailAndPassword(auth, data.email, data.password)
+        .then(async (user) => {
+            await updateProfile(user.user, {
+            displayName: data.name,
+            })
+            handleInfoUser({
+            name: data.name,
+            email: data.email,
+            uid: user.user.uid
+            })
+            toast.success("Cadastrado com sucesso!");
+            navigate("/dashboard", {replace: true})
+        })
+        .catch((error) => {
+            toast.error("Erro ao cadastrar usuário!");
+            console.log(error)
+        })
     }
-
-
     return(
         <Container>
             <div
