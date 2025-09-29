@@ -1,6 +1,6 @@
 import { useState, useContext, type ChangeEvent } from "react";
 import { useForm } from "react-hook-form";
-import z, { url } from "zod";
+import z from "zod";
 import { InputRegister } from "../../../components/inputRegister";
 import { SelectRegister } from "../../../components/select";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -22,6 +22,7 @@ const schema = z.object({
     wc: z.string().nonempty("O número de casas de banho é obrigatório!"),
     garage: z.string().nonempty("O número de garagens é obrigatório!"),
     area: z.string().nonempty("A areá total do imóvel é obrigatória!"),
+    price: z.string().nonempty("O preço do imóvel é obrigatório!"),
     description: z.string().nonempty("A descrição do imóvel é obrigatória!").min(10, "A descrição do imóvel deve ter no minímo 10 caracteres!"),
     whatsapp: z.string().nonempty("O número de telefone é obrigatório!").refine((value) => /^(\d{9,10})$/.test(value), {
         message: "Número de telefone inválido"
@@ -70,6 +71,7 @@ export default function New(){
             type: data.type,
             whatsapp: data.whatsapp,
             description: data.description,
+            price: data.price,
             created: new Date(),
             owner: user?.name,
             uid: user?.uid,
@@ -195,6 +197,16 @@ export default function New(){
                             register={register}
                             name="location"
                             error={errors.location?.message}
+                        />
+                    </div>
+                    <div className="mb-3">
+                        <p className="font-medium mb-2">Preço do Imóvel</p>
+                        <InputRegister
+                            placeholder="Insira o preço do imóvel"
+                            type="text"
+                            register={register}
+                            name="price"
+                            error={errors.price?.message}
                         />
                     </div>
                     <div className="flex w-full flex-row items-center gap-4">
