@@ -1,6 +1,6 @@
 import { useState, useContext, type ChangeEvent } from "react";
 import { useForm } from "react-hook-form";
-import z from "zod";
+import z, { url } from "zod";
 import { InputRegister } from "../../../components/inputRegister";
 import { SelectRegister } from "../../../components/select";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -11,8 +11,9 @@ import toast from "react-hot-toast";
 import { v4 as uuidV4 } from "uuid";
 import { AuthContext } from "../../../context/authContext";
 import { ref, getDownloadURL, uploadBytes, deleteObject} from "firebase/storage";
-import { storage } from "../../../services/firebaseConnection";
+import { storage, db } from "../../../services/firebaseConnection";
 import { FiTrash } from "react-icons/fi";
+import { addDoc, collection } from "firebase/firestore";
 
 const schema = z.object({
     name: z.string().nonempty("O tipo de Imóvel é obrigatório!"),
@@ -40,13 +41,48 @@ interface ImageItemProps{
 }
 export default function New(){
     const {user} = useContext(AuthContext);
-    const [houseImages, setHouseImages] = useState<ImageItemProps[]>([]);
+    const [propertyImages, setPropertyImages] = useState<ImageItemProps[]>([]);
     const {register, handleSubmit, formState: {errors, isValid}, reset} = useForm<FormData>({
         resolver: zodResolver(schema),
         mode: "onChange"
       })
     async function onSubmit(data: FormData){
-        alert("teste!");
+        if(propertyImages.length === 0){
+            toast.error("Faça o upload da imagem para este imóvel!");
+            return;
+        }
+
+        const propertyImageList = propertyImages.map( property => {
+            return{
+                uid: property.uid,
+                name: property.name,
+                url: property.url
+            }
+        })
+
+        addDoc(collection(db, "property"), {
+            name: data.name,
+            location: data.location,
+            rooms: data.rooms,
+            wc: data.wc,
+            garage: data.garage,
+            area: data.area,
+            type: data.type,
+            whatsapp: data.whatsapp,
+            description: data.description,
+            created: new Date(),
+            owner: user?.name,
+            uid: user?.uid,
+            images: propertyImageList,
+        })
+        .then(() => {
+            reset(); // função que limpa os campos do formulário
+            setPropertyImages([]);
+            toast.success("Imóvel cadastrado com sucesso!")
+        })
+        .catch((error) => {
+            console.log("Erro ao cadastrar no banco!", error);
+        })  
     }
 
     async function handleFile(e: ChangeEvent<HTMLInputElement>){
@@ -80,7 +116,7 @@ export default function New(){
                     url: downloadUrl
                 }
 
-                setHouseImages((images) => [...images, imageItem]);
+                setPropertyImages((images) => [...images, imageItem]);
                 toast.success("Imagem carregada com sucesso!");
             })
         })
@@ -95,7 +131,8 @@ export default function New(){
     
         try{
           await deleteObject(imageRef);
-          setHouseImages(houseImages.filter((house) => house.url !== item.url));
+          setPropertyImages(propertyImages.filter((house) => house.url !== item.url));
+          toast.success("Imagem excluída com sucesso!");
         }catch(error){
           console.log("Erro ao excluir a imagem");
         }
@@ -117,7 +154,7 @@ export default function New(){
                         />
                     </div>
                 </button>
-                {houseImages.map(item => 
+                {propertyImages.map(item => 
                      <div 
                      key={item.name} 
                      className="w-full h-32 flex items-center justify-center relative">
