@@ -1,7 +1,11 @@
+import { useState, useEffect, useContext } from "react";
+import { Container } from "../../components/container";
+import { DashboardHeader } from "../../components/dashboardheader";
+
 export default function Dashboard(){
     return(
-        <>
-            <h1>Página do Dashboard</h1>
-        </>
+        <Container>
+            <DashboardHeader/>
+        </Container>
     );
 }
