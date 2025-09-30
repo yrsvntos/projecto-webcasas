@@ -1,69 +1,49 @@
-# React + TypeScript + Vite
+🏡 WebCasas
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+WebCasas é uma plataforma imobiliária desenvolvida em React, TypeScript e TailwindCSS, permitindo que usuários cadastrem e gerenciem imóveis para venda ou aluguel.
 
-Currently, two official plugins are available:
+✨ Funcionalidades
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+🔒 Autenticação: Login e registro de usuários
 
-## Expanding the ESLint configuration
+🏘️ Cadastro de imóveis: Venda ou aluguel com fotos e detalhes
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+📊 Dashboard: Gerenciamento de anúncios e perfil
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+🛡️ Rotas protegidas: Apenas usuários autenticados têm acesso
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+✅ Validação de formulários com Zod
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+🎞️ Carrossel de imagens usando Swiper
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+🗂️ Banco de dados em Firebase
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+🆔 IDs únicos com UUID
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+💻 Tecnologias Utilizadas
+
+React + TypeScript
+
+TailwindCSS
+
+Firebase (Auth, Firestore e Storage)
+
+Zod
+
+Swiper
+
+UUID
+
+📖 Descrição do Projeto
+
+O WebCasas funciona como uma agência imobiliária online, permitindo que qualquer usuário:
+
+Crie uma conta no site
+
+Cadastre seus imóveis para venda ou aluguel
+
+Gerencie seus anúncios através de um dashboard
+
+Navegue pelos imóveis cadastrados por outros usuários
+
+O sistema garante segurança e proteção de rotas, garantindo que apenas usuários logados acessem funcionalidades restritas.
