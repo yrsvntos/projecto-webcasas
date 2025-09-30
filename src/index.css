@@ -4,3 +4,18 @@
 body{
     background-color: #f1f5f9 !important;
 }
+
+.custom-swiper .swiper-button-next,
+.custom-swiper .swiper-button-prev {
+  color: #fff !important;
+}
+
+.custom-swiper .swiper-pagination-bullet {
+  background: #fff !important;
+  opacity: 0.6;
+}
+
+.custom-swiper .swiper-pagination-bullet-active {
+  background: #fff !important;
+  opacity: 1;
+}
