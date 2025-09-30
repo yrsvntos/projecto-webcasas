@@ -7,6 +7,7 @@ import { HouseDetail } from "./pages/house";
 import Register from "./pages/register";
 import Error from "./pages/error";
 import Private from "./routes/Private";
+import New from "./pages/dashboard/new";
 
 const router = createBrowserRouter(
   [
@@ -22,6 +23,14 @@ const router = createBrowserRouter(
           element: 
           <Private>
             <Dashboard/>
+          </Private>
+            
+        },
+        {
+          path: "/dashboard/new",
+          element: 
+          <Private>
+            <New/>
           </Private>
             
         },
