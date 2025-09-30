@@ -76,111 +76,114 @@ export function Home(){
     }
     return(
         <Container>
-            <section 
-                className="bg-white p-4 rounded-lg w-full max-w-3xl mx-auto flex justify-center items-center gap-2"
-            >
-                <input 
-                    className="w-full border-2 rounded-lg h-9 px-3 outline-none"
-                    placeholder="Pesquisar por endereço..." 
-                    value={input}
-                    onChange={(e) => setInput(e.target.value)}
-                />
-                <button
-
-                    onClick={handleSearchCar}
-                    className="cursor-pointer bg-red-500 h-9 px-8 rounded-lg text-white font-medium text-lg"
+            <div className="min-h-screen">
+                <section 
+                    className="bg-white p-4 rounded-lg w-full max-w-3xl mx-auto flex justify-center items-center gap-2"
                 >
-                    Buscar
-                </button>
-            </section>
-            <h1 className="font-bold text-center mt-6 text-2xl mb-4">
-                Aluguel e Venda de Casas
-            </h1>
+                    <input 
+                        className="w-full border-2 rounded-lg h-9 px-3 outline-none"
+                        placeholder="Pesquisar por endereço..." 
+                        value={input}
+                        onChange={(e) => setInput(e.target.value)}
+                    />
+                    <button
 
-            <main
-                className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3"
-            >
-                {properties.map(item => (
-                    <Link to={`/casas/${item.name}`}>
-                        <div 
-                            key={item.id}
-                            className="border outline-none border-zinc-100"
-                        >
-                            <div className="house-img relative">
+                        onClick={handleSearchCar}
+                        className="cursor-pointer bg-red-500 h-9 px-8 rounded-lg text-white font-medium text-lg"
+                    >
+                        Buscar
+                    </button>
+                </section>
+                <h1 className="font-bold text-center mt-6 text-2xl mb-4">
+                    Aluguel e Venda de Casas
+                </h1>
+
+                <main
+                    className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3"
+                >
+                    {properties.map(property => (
+                        <Link to={`/casas/${property.id}`}>
                             <div 
-                                className="w-full  relative h-50 rounded-lg bg-gray-400"
-                                style={{display: loadImage.includes(item.id) ? "none" : "block"}}
+                                key={property.id}
+                                className="border outline-none border-zinc-100"
                             >
-                                <FiHome size={78} color="#fff" className="absolute top-16 left-40"/>
-                            </div>
-                                <img 
-                                    src={item.images[0].url} 
-                                    alt={`Foto do Imóvel  - ${item.name} `} 
-                                    className="w-full object-cover rounded-bl-none rounded-br-none rounded-md h-50"
-                                    onLoad={() => handleImageLoad(item.id)}
-                                    style={{display: loadImage.includes(item.id) ? "block" : "none"}}
-                                />
-                                <div className="bg-red-500 text-white text-sm font-bold rounded-md py-1 px-3 type-property absolute top-3 right-3">
-                                    <small>{item.type.toLocaleUpperCase()}</small>
-                                </div>
-                            </div>
-                            <div className="house-info bg-white rounded-md rounded-t-none p-4">
-                                <h3 className="font-bold text-xl">{item.name}</h3>
-                                <small className="flex items-center font-medium text-zinc-500 mt-2 gap-1">
-                                    <HiLocationMarker size={16}/>{item.location}
-                                </small>
-                                <div className="house-details text-sm mt-4 p-2 bg-zinc-200 gap-3 flex items-center rounded-md">
-                                    <div className="rooms flex items-center gap-1 relative group">
-                                        <BiBed size={23} className="text-zinc-500"/> {item.rooms}
-                                        <span 
-                                            className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block bg-gray-800 text-white text-sm rounded-lg px-3 py-1 shadow-lg" 
-                                        >
-                                            Quartos
-                                        </span>
+                                <div className="house-img relative">
+                                    <div 
+                                        className="w-full  relative h-50 rounded-lg bg-gray-400"
+                                        style={{display: loadImage.includes(property.id) ? "none" : "block"}}
+                                    >
+                                        <FiHome size={78} color="#fff" className="absolute top-16 left-40"/>
                                     </div>
+                                    <img 
+                                        src={property.images[0].url} 
+                                        alt={`Foto do Imóvel  - ${property.name} `} 
+                                        className="w-full object-cover rounded-bl-none rounded-br-none rounded-md h-50"
+                                        onLoad={() => handleImageLoad(property.id)}
+                                        style={{display: loadImage.includes(property.id) ? "block" : "none"}}
+                                    />
+                                    <div className="bg-red-500 text-white text-sm font-bold rounded-md py-1 px-3 type-property absolute top-3 right-3">
+                                        <small>{property.type.toLocaleUpperCase()}</small>
+                                    </div>
+                                </div>
+                                <div className="house-info bg-white rounded-md rounded-t-none p-4">
+                                    <h3 className="font-bold text-xl">{property.name}</h3>
+                                    <small className="flex items-center font-medium text-zinc-500 mt-2 gap-1">
+                                        <HiLocationMarker size={16}/>{property.location}
+                                    </small>
+                                    <div className="house-details text-sm mt-4 p-2 bg-zinc-200 gap-3 flex items-center rounded-md">
+                                        <div className="rooms flex items-center gap-1 relative group">
+                                            <BiBed size={23} className="text-zinc-500"/> {property.rooms}
+                                            <span 
+                                                className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block bg-gray-800 text-white text-sm rounded-lg px-3 py-1 shadow-lg" 
+                                            >
+                                                Quartos
+                                            </span>
+                                        </div>
 
-                                    <div className="rooms flex items-center gap-1 relative group">
-                                        <BiBath size={23} className="text-zinc-500"/> {item.wc}
-                                        <span 
-                                            className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block bg-gray-800 text-white text-sm rounded-lg px-3 py-1 shadow-lg" 
-                                        >
-                                            WC
-                                        </span>
+                                        <div className="rooms flex items-center gap-1 relative group">
+                                            <BiBath size={23} className="text-zinc-500"/> {property.wc}
+                                            <span 
+                                                className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block bg-gray-800 text-white text-sm rounded-lg px-3 py-1 shadow-lg" 
+                                            >
+                                                WC
+                                            </span>
+                                        </div>
+                                        <div className="rooms flex items-center gap-1 relative group">
+                                            <BiSolidCarGarage size={23} className="text-zinc-500"/> {property.garage}
+                                            <span 
+                                                className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block bg-gray-800 text-white text-sm rounded-lg px-3 py-1 shadow-lg" 
+                                            >
+                                                Garagem
+                                            </span>
+                                        </div>
+                                        <div className="rooms flex items-center gap-1 relative group">
+                                            <MdSquareFoot size={23} className="text-zinc-500"/> {property.area}m<sup>2</sup>
+                                            <span 
+                                                className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block bg-gray-800 text-white text-sm rounded-lg px-3 py-1 shadow-lg" 
+                                            >
+                                                Área Bruta
+                                            </span>
+                                        </div>
                                     </div>
-                                    <div className="rooms flex items-center gap-1 relative group">
-                                        <BiSolidCarGarage size={23} className="text-zinc-500"/> {item.garage}
-                                        <span 
-                                            className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block bg-gray-800 text-white text-sm rounded-lg px-3 py-1 shadow-lg" 
-                                        >
-                                            Garagem
-                                        </span>
+                                    <div className="house-vendor flex items-center justify-between mt-4 text-sm">
+                                        <div className="vendor-name flex items-center gap-1">
+                                            <p className="font-medium text-md text-zinc-900"><strong>MZN {property.price}</strong></p>
+                                        </div>
+                                        <a 
+                                            href={`https://api.whatsapp.com/send?phone=${property.whatsapp}`} 
+                                            target="_blank"
+                                            className="bg-green-600 vendor-contact border flex items-center text-white rounded outline px-2 py-1 gap-1 cursor-pointer">
+                                            <FaWhatsapp size={18}/> Contactar
+                                        </a>
                                     </div>
-                                    <div className="rooms flex items-center gap-1 relative group">
-                                        <MdSquareFoot size={23} className="text-zinc-500"/> {item.area}m<sup>2</sup>
-                                        <span 
-                                            className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block bg-gray-800 text-white text-sm rounded-lg px-3 py-1 shadow-lg" 
-                                        >
-                                            Área Bruta
-                                        </span>
-                                    </div>
-                                </div>
-                                <div className="house-vendor flex items-center justify-between mt-4 text-sm">
-                                    <div className="vendor-name flex items-center gap-1">
-                                        <p className="font-medium text-md text-zinc-900"><strong>MZN {item.price}</strong></p>
-                                    </div>
-                                    <a 
-                                        href={`https://api.whatsapp.com/send?phone=${item.whatsapp}`} 
-                                        target="_blank"
-                                        className="bg-green-600 vendor-contact border flex items-center text-white rounded outline px-2 py-1 gap-1 cursor-pointer">
-                                        <FaWhatsapp size={18}/> Contactar
-                                    </a>
                                 </div>
                             </div>
-                        </div>
-                    </Link>
-                ))}
-                
-            </main>
+                        </Link>
+                    ))}
+                    
+                </main>
+            </div>
+            
         </Container>
     );
 }
