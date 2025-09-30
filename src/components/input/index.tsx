@@ -14,7 +14,7 @@ export function Input({rules, register,  type, name, placeholder, error}:InputPr
     return(
         <>
             <input 
-                className="w-full border-2 rounded-md h-11 px-4 border-gray-200"    
+                className="w-full max-w-full border-2 rounded-md h-11 px-4 border-gray-200 pl-10"    
                 type= {type}
                 id={name}
                 placeholder={placeholder}
