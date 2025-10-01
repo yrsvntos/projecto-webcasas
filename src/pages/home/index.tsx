@@ -5,7 +5,7 @@ import { BiSolidCarGarage, BiBed, BiBath } from "react-icons/bi";
 import { MdSquareFoot } from "react-icons/md";
 import { FiHome } from "react-icons/fi";
 import { FaWhatsapp } from "react-icons/fa";
-import { getDocs, collection, query, orderBy } from "firebase/firestore";
+import { getDocs, collection, query, orderBy, where } from "firebase/firestore";
 import { db } from "../../services/firebaseConnection";
 import { Link } from "react-router-dom";
 
@@ -70,9 +70,69 @@ export function Home(){
     function handleImageLoad(id: string){
         setLoadImage((prevImageLoaded) => [...prevImageLoaded, id])
     }
-    function handleSearchCar(){
-        alert("Teste");
-        return;
+    function loadProperty(){
+        const propertyRef = collection(db, "property");
+        const queryRef = query(propertyRef, orderBy("created", "desc"));
+
+        getDocs(queryRef)
+        .then((snapshot) => {
+            let listProperty = [] as PropertyProps[];
+
+            snapshot.forEach( doc => {
+                listProperty.push({
+                    id: doc.id,
+                    name: doc.data().name,
+                    price: doc.data().price,
+                    location: doc.data().location,
+                    rooms: doc.data().rooms,
+                    type: doc.data().type,
+                    whatsapp: doc.data().whatsapp,
+                    wc: doc.data().wc,
+                    garage: doc.data().garage,
+                    area: doc.data().area,
+                    images: doc.data().images,
+                    uid: doc.data().uid
+                })
+            })
+            setProperties(listProperty)
+        })
+    }
+    async function handleSearchHouse(){
+
+        if(input === ''){
+          loadProperty();
+          return;
+        }
+        setProperties([]);
+        setLoadImage([]);
+    
+        const q = query(collection(db, "property"),
+        where("name", ">=", input.toUpperCase()),
+        where("name", "<=", input.toUpperCase() + "\uf8ff")
+        );
+    
+        const querySnapshot = await getDocs(q);
+    
+        let listProperty = [] as PropertyProps[];
+    
+        querySnapshot.forEach((doc) => {
+            listProperty.push({
+                id: doc.id,
+                name: doc.data().name,
+                price: doc.data().price,
+                location: doc.data().location,
+                rooms: doc.data().rooms,
+                type: doc.data().type,
+                whatsapp: doc.data().whatsapp,
+                wc: doc.data().wc,
+                garage: doc.data().garage,
+                area: doc.data().area,
+                images: doc.data().images,
+                uid: doc.data().uid
+            })
+        })
+    
+        setProperties(listProperty)
     }
     return(
         <Container>
@@ -88,7 +148,7 @@ export function Home(){
                     />
                     <button
 
-                        onClick={handleSearchCar}
+                        onClick={handleSearchHouse}
                         className="cursor-pointer bg-red-500 h-9 px-8 rounded-lg text-white font-medium text-lg"
                     >
                         Buscar
@@ -99,7 +159,7 @@ export function Home(){
                 </h1>
 
                 <main
-                    className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3"
+                    className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 mb-4"
                 >
                     {properties.map(property => (
                         <Link to={`/casas/${property.id}`}>
@@ -169,12 +229,12 @@ export function Home(){
                                         <div className="vendor-name flex items-center gap-1">
                                             <p className="font-medium text-md text-zinc-900"><strong>MZN {property.price}</strong></p>
                                         </div>
-                                        <a 
-                                            href={`https://api.whatsapp.com/send?phone=${property.whatsapp}`} 
+                                        <Link 
+                                            to={`https://api.whatsapp.com/send?phone=${property.whatsapp}`} 
                                             target="_blank"
                                             className="bg-green-600 vendor-contact border flex items-center text-white rounded outline px-2 py-1 gap-1 cursor-pointer">
                                             <FaWhatsapp size={18}/> Contactar
-                                        </a>
+                                        </Link>
                                     </div>
                                 </div>
                             </div>
